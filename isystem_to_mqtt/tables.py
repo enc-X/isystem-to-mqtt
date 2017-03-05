@@ -8,7 +8,151 @@ def get_tables(model):
     """ Return the address definition depending of model. """
     if model == "modulens-o":
         return (READ_TABLE_MODULENS_O, WRITE_TABLE_MODULENS_O, ZONE_TABLE_MODULENS_O)
+    if model == "diematic3":
+        return (READ_TABLE_DIEMATIC3, WRITE_TABLE_DIEMATIC3, ZONE_TABLE_DIEMATIC3)
     return (None, None, None)
+ZONE_TABLE_DIEMATIC3 = [
+                         (3, 4),
+                         (108, 3),
+                         (7, 3),
+                         (14, 8),
+                         (0,  0),
+                         (23, 11),
+                         (38, 1),
+                         (59, 4),
+                         (68, 4),
+                         (0,  0),
+                         (74, 5),
+                         (89, 7),
+                         (96, 1),
+                         (453, 1),
+                         (456, 1),
+                         (465, 1),
+                         (0,  0),
+                         (126, 21),
+                         (147, 21),
+                         (189, 21),
+#                        (231, 2),
+                        ]
+
+READ_TABLE_DIEMATIC3 = {
+    3: TagDefinition("system/ctrl", convert.unit),
+    4: TagDefinition("system/hour", convert.unit),
+    5: TagDefinition("system/minute", convert.unit),
+    6: TagDefinition("system/day-of-week", convert.unit),
+    108: TagDefinition("system/day", convert.unit),
+    109: TagDefinition("system/month", convert.unit),
+    110: TagDefinition("system/year", convert.unit),
+    7: TagDefinition("outside/temperature", convert.tenth),
+    8: TagDefinition("boiler/summer-setpoint", convert.tenth),
+    9: TagDefinition("outside/antifreeze-temperature", convert.tenth),
+
+    14: TagDefinition("zone-a/day-target-temperature", convert.tenth),
+    15: TagDefinition("zone-a/night-target-temperature", convert.tenth),
+    16: TagDefinition("zone-a/antifreeze-target-temperature", convert.tenth),
+    17: MultipleTagDefinition([("zone-a/mode", convert.derog_bit),
+                                ("zone-a/mode-raw", convert.unit),
+                                ("zone-a/mode-simple", convert.derog_bit_simple)]),
+    18: TagDefinition("zone-a/sensor-temperature", convert.tenth),
+    19: TagDefinition("zone-a/sensor-influence", convert.unit),
+    20: TagDefinition("zone-a/slope-heating-curvey", convert.tenth),
+    21: TagDefinition("zone-a/calculated-temperature", convert.tenth),
+
+    23: TagDefinition("zone-b/day-target-temperature", convert.tenth),
+    24: TagDefinition("zone-b/night-target-temperature", convert.tenth),
+    25: TagDefinition("zone-b/antifreeze-target-temperature", convert.tenth),
+    26: MultipleTagDefinition([("zone-b/mode", convert.derog_bit),
+                                ("zone-b/mode-raw", convert.unit),
+                                ("zone-b/mode-raw-simple", convert.derog_bit_simple),
+                                ("zone-b/mode-simple", convert.derog_bit_simple)
+                              ]),
+    27: TagDefinition("zone-b/sensor-temperature", convert.tenth),
+    28: TagDefinition("zone-b/sensor-influence", convert.unit),
+    29: TagDefinition("zone-b/slope-heating-curvey", convert.tenth),
+    30: TagDefinition("zone-b/departure-temperature-min", convert.tenth),
+    31: TagDefinition("zone-b/departure-temperature-max", convert.tenth),
+    32: TagDefinition("zone-b/calculated-temperature", convert.tenth),
+    33: TagDefinition("zone-b/departure-temperature", convert.tenth),
+
+    38: MultipleTagDefinition([("dhw/mode", convert.derog_bit),
+                                ("dhw/mode-raw", convert.unit),
+                                ("dhw/mode-simple", convert.derog_bit_simple)
+                              ]),
+
+    59: TagDefinition("dhw/day-target-temperature", convert.tenth),
+    60: TagDefinition("dhw/priority", convert.unit),
+    61: TagDefinition("dhw/pump-delay", convert.unit),
+    62: TagDefinition("dhw/temperature", convert.tenth),
+    96: TagDefinition("dhw/night-target-temperature", convert.tenth),
+    68: TagDefinition("boiler/day-curve-footprint", convert.tenth),
+    69: TagDefinition("boiler/night-curve-footprint", convert.tenth),
+
+    70: TagDefinition("boiler/min-temperature", convert.tenth),
+    71: TagDefinition("boiler/max-temperature", convert.tenth),
+
+    74: TagDefinition("boiler/calculated-temperature", convert.tenth),
+    75: TagDefinition("boiler/temperature", convert.tenth),
+    76: TagDefinition("boiler/smoke-temperature", convert.tenth),
+    77: TagDefinition("boiler/burner/starts", convert.bcd_ten),
+    78: TagDefinition("boiler/burner/hours", convert.bcd_ten),
+
+    89: MultipleTagDefinition([ ("boiler/base-and-ecs", convert.unit),
+                                ("boiler/pump-aux", convert.readbit0),
+                                ("boiler/burner-status", convert.readbit3),
+                                ("zone-a/pump", convert.readbit4),
+                                ("dhw/pump", convert.readbit5),
+                                ]),
+    90: MultipleTagDefinition([ ("boiler/options-b-and-c", convert.unit),
+                                ("zone-b/valve/closing", convert.readbit0),
+                                ("zone-b/valve/opening", convert.readbit1),
+                                ("zone-b/pump", convert.readbit4),
+                                ]),
+    91: TagDefinition("boiler/terminal2", convert.unit),
+    92: TagDefinition("boiler/terminal3", convert.unit),
+    93: TagDefinition("boiler/option-c", convert.unit),
+    94: TagDefinition("boiler/telecommand1", convert.unit),
+    95: TagDefinition("boiler/telecommand2", convert.unit),
+    126: TagDefinition("zone-a/schedule", convert.json_week_schedule, 21),
+    147: TagDefinition("zone-b/schedule", convert.json_week_schedule, 21),
+    189: TagDefinition("dhw/schedule", convert.json_week_schedule, 21),
+
+    453: TagDefinition("boiler/return-temperature", convert.tenth),
+    456: TagDefinition("boiler/pressure", convert.tenth),
+
+    231: TagDefinition("zone-a/program", convert.unit),
+    232: TagDefinition("zone-b/program", convert.unit),
+
+    465: TagDefinition("boiler/failure", convert.unit),
+}
+
+WRITE_TABLE_DIEMATIC3 = {
+    "system/hour/SET": WriteTagDefinition(4, convert.write_unit),
+    "system/minute/SET": WriteTagDefinition(5, convert.write_unit),
+    "system/day-of-week/SET": WriteTagDefinition(6, convert.write_unit),
+    "system/day/SET": WriteTagDefinition(108, convert.write_unit),
+    "system/month/SET": WriteTagDefinition(109, convert.write_unit),
+    "system/year/SET": WriteTagDefinition(110, convert.write_unit),
+
+    "zone-a/mode-simple/SET": WriteTagDefinition(17, convert.write_derog_bit_simple),
+    "zone-a/mode-raw/SET": WriteTagDefinition(17, convert.write_unit),
+    "zone-a/day-target-temperature/SET": WriteTagDefinition(14, convert.write_tenth),
+    "zone-a/night-target-temperature/SET": WriteTagDefinition(15, convert.write_tenth),
+
+    "zone-b/mode-simple/SET": WriteTagDefinition(26, convert.write_derog_bit_simple),
+    "zone-b/mode-raw/SET": WriteTagDefinition(26, convert.write_unit),
+    "zone-b/day-target-temperature/SET": WriteTagDefinition(23, convert.write_tenth),
+    "zone-b/night-target-temperature/SET": WriteTagDefinition(24, convert.write_tenth),
+
+    "dhw/day-target-temperature/SET": WriteTagDefinition(59, convert.write_tenth),
+    "dhw/night-target-temperature/SET": WriteTagDefinition(96, convert.write_tenth),
+    "dhw/mode-raw/SET": WriteTagDefinition(38, convert.write_unit),
+    "dhw/mode-simple/SET" : WriteTagDefinition(38, convert.write_derog_bit_simple),
+
+    "zone-a/program/SET": WriteTagDefinition(231, convert.write_unit),
+    "zone-b/program/SET": WriteTagDefinition(232, convert.write_unit),
+
+}
+
 
 ZONE_TABLE_MODULENS_O = [(231, 20),
                          (507, 4),
