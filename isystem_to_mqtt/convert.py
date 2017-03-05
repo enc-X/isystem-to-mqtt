@@ -290,3 +290,35 @@ def write_derog_bit_simple(value):
     if value not in DEROG_NAME_TO_VALUE:
         return None
     return [DEROG_NAME_TO_VALUE[value]]
+
+def bcd_ten(raw_table, base_index):
+    """ Direct word value """
+    return int(hex(raw_table[base_index])[2:]+"0")
+
+def readbit(val, bitidx):
+    """ Direct word value """
+    return int((val & (1<<bitidx))!=0)
+
+def readbit0(raw_table, base_index):
+    """ Direct word value """
+    return int(readbit(raw_table[base_index], 0 ))
+
+def readbit1(raw_table, base_index):
+    """ Direct word value """
+    return (readbit(raw_table[base_index], 1 ))
+
+def readbit2(raw_table, base_index):
+    return (readbit(raw_table[base_index], 2 ))
+
+def readbit3(raw_table, base_index):
+    return (readbit(raw_table[base_index], 3 ))
+
+def readbit4(raw_table, base_index):
+    return (readbit(raw_table[base_index], 4 ))
+
+def readbit5(raw_table, base_index):
+    return (readbit(raw_table[base_index], 5 ))
+
+def readbit6(raw_table, base_index):
+    return (readbit(raw_table[base_index], 6 ))
+
