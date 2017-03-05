@@ -109,18 +109,25 @@ instrument.debug = False   # True or False
 
 def read_zone(base_address, number_of_value):
     """ Read a MODBUS table zone and send the value to MQTT. """
-    try:
-        raw_values = instrument.read_registers(base_address, number_of_value)
-    except EnvironmentError:
-        logging.exception("I/O error")
-    except ValueError:
-        logging.exception("Value error")
-    else:
-        for index in range(0, number_of_value):
-            address = base_address + index
-            tag_definition = READ_TABLE.get(address)
-            if tag_definition:
-                tag_definition.publish(client, base_topic, raw_values, index)
+    readcounter=5
+    while readcounter>0:
+        try:
+            raw_values = instrument.read_registers(base_address, number_of_value)
+            readcounter=0
+        except EnvironmentError:
+            logging.exception("I/O error: %d, %d", base_address, number_of_value)
+            instrument.wait_time_slot()
+            mycounter = mycounter - 1
+        except ValueError:
+            logging.exception("Value error: %d, %d", base_address, number_of_value)
+            instrument.wait_time_slot()
+            mycounter = mycounter - 1
+        else:
+            for index in range(0, number_of_value):
+                address = base_address + index
+                tag_definition = READ_TABLE.get(address)
+                if tag_definition:
+                    tag_definition.publish(client, base_topic, raw_values, index)
 
 def write_value(message):
     """ Write a value receive from MQTT to MODBUS """
