@@ -67,63 +67,63 @@ BIT_ALL_ZONE = 128
 
 
 def derog_bit(raw_table, base_index):
-    """ Convert derog bit flag to french """
+    """ Convert derog bit flag to english """
     value = raw_table[base_index]
     stringvalue = ""
     if value & BIT_ANTIFREEZE:
-        stringvalue += "Antigel "
+        stringvalue += "Antifreeze "
     if value & BIT_NIGHT:
-        stringvalue += "Nuit "
+        stringvalue += "Night "
     if value & BIT_DAY:
-        stringvalue += "Jour "
+        stringvalue += "Day "
     if value & BIT_AUTO:
-        stringvalue += "Automatique "
+        stringvalue += "Automatic "
     if value & BIT_DHW:
-        stringvalue += "Eau "
+        stringvalue += "Water "
     if value & BIT_END_OF_PROGRAM:
-        stringvalue += "jusqu'a la fin du programme "
+        stringvalue += "until the end of the program "
     if value & BIT_DHW_END_OF_PROGRAM:
-        stringvalue += "jusqu'a la fin du programme (eau) "
+        stringvalue += "until the end of the program (water) "
     if value & BIT_ALL_ZONE:
-        stringvalue += "toutes les zones"
+        stringvalue += "all areas"
     return stringvalue
 
 
 def derog_bit_simple(raw_table, base_index):
-    """ Convert derog bit flag to french do not handle all case """
+    """ Convert derog bit flag to english do not handle all case """
     value = raw_table[base_index]
     stringvalue = ""
     if value & BIT_ANTIFREEZE:
-        stringvalue = "Vacances"
+        stringvalue = "Holidays"
     if value & BIT_NIGHT:
-        stringvalue = "Nuit"
+        stringvalue = "Night"
     if value & BIT_DAY:
-        stringvalue = "Jour"
+        stringvalue = "Day"
     if value & BIT_AUTO:
-        stringvalue = "Automatique"
+        stringvalue = "Automatic"
     return stringvalue
 
 
 def active_mode(raw_table, base_index):
-    """ Convert mode to french  """
+    """ Convert mode to english  """
     value = raw_table[base_index]
     if value == 0:
-        return "Antigel"
+        return "Antifreeze"
     if value == 2:
-        return "Nuit"
+        return "Night"
     if value == 4:
-        return "Jour"
-    return "Inconnu"
+        return "Day"
+    return "Unknown"
 
 
 def boiler_mode(raw_table, base_index):
-    """ Convert boiler mode to french  """
+    """ Convert boiler mode to english  """
     value = raw_table[base_index]
     if value == 4:
-        return "Ete"
+        return "Summer"
     if value == 5:
-        return "Hiver"
-    return "Inconnu"
+        return "Winder"
+    return "Unknown"
 
 
 def day_schedule(raw_table, base_index):
@@ -182,11 +182,11 @@ def day_mounth_year(raw_table, base_index):
                                raw_table[base_index + 2])
 
 def decrease(raw_table, base_index):
-    """ Convert decrease flag to french """
+    """ Convert decrease flag to english """
     if raw_table[base_index] == 0:
         return "stop"
     else:
-        return "abaissement"
+        return "lowering"
 
 
 def off_on(raw_table, base_index):
@@ -278,15 +278,15 @@ def write_tenth(value):
     return [int_value]
 
 DEROG_NAME_TO_VALUE = {
-    "Vacances": BIT_ANTIFREEZE | BIT_END_OF_PROGRAM,
-    "Nuit": BIT_NIGHT | BIT_END_OF_PROGRAM,
-    "Jour": BIT_DAY | BIT_END_OF_PROGRAM,
-    "Automatique": BIT_AUTO
+    "Holidays": BIT_ANTIFREEZE | BIT_END_OF_PROGRAM,
+    "Night": BIT_NIGHT | BIT_END_OF_PROGRAM,
+    "Day": BIT_DAY | BIT_END_OF_PROGRAM,
+    "Automatic": BIT_AUTO
 }
 
 
 def write_derog_bit_simple(value):
-    """ Convert French Mode to bit value """
+    """ Convert english Mode to bit value """
     if value not in DEROG_NAME_TO_VALUE:
         return None
     return [DEROG_NAME_TO_VALUE[value]]
