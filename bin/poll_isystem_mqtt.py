@@ -109,11 +109,11 @@ instrument.debug = False   # True or False
 
 def read_zone(base_address, number_of_value):
     """ Read a MODBUS table zone and send the value to MQTT. """
-    readcounter=5
-    while readcounter>0:
+    mycounter=5
+    while mycounter>0:
         try:
             raw_values = instrument.read_registers(base_address, number_of_value)
-            readcounter=0
+            mycounter=0
         except EnvironmentError:
             logging.exception("I/O error: %d, %d", base_address, number_of_value)
             instrument.wait_time_slot()
@@ -139,7 +139,15 @@ def write_value(message):
                       message.topic.strip(base_topic), string_value,
                       tag_definition.address, value)
         if value is not None:
-            instrument.write_registers(tag_definition.address, value)
+            mycnt = 3
+            while mycnt > 0:
+                try:
+                    instrument.write_registers(tag_definition.address, value)
+                    mycnt = 0
+                except ValueError:
+                    logging.exception("Value error: %d, %d", tag_definition.address, value)
+                    instrument.wait_time_slot()
+                    mycnt = mycnt - 1
 
 
 instrument.wait_time_slot()
