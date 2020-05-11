@@ -67,5 +67,11 @@ heating/zone-a/night-target-temperature     Currect night mode target temperatur
 heating/zone-a/night-target-temperature/SET To set night mode target temperature
 =========================================== ======================================
 
+Docker container
+----------------
 
-
+Building
+::
+    docker build -t "enc-x/isystem-to-mqtt:v15" .
+    
+]
